@@ -1,20 +1,13 @@
 import express, { Application } from "express";
 import "dotenv/config";
-import { createData, deleteData, editData, getData } from "./logic";
-import { isDataValidName } from "./middlewares/validation";
-import { isDataIdValid } from "./middlewares/isDataIdValid";
+import developerRouter from "./router/developers.routers";
+import projectRouter from "./router/projects.routers";
 
 const app: Application = express();
+
 app.use(express.json());
 
-app.post('/developers', isDataValidName, createData);
-
-// app.post('/developers/:id/infos', ... );
-
-app.get('/developers/:id', getData);
-
-app.patch('/developers/:id', isDataIdValid, isDataValidName, editData);
-
-app.delete('/developers/:id', isDataIdValid, deleteData);
+app.use("/developers", developerRouter);
+app.use("/projects", projectRouter);
 
 export default app;
