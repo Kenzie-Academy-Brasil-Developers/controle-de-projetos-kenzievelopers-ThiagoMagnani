@@ -4,13 +4,32 @@ import { client } from "../database";
 import { developers, developersBody } from "../interfaces/developers.interfaces";
 
 export const getDataServices = async (id: string) => {
-    const queryString = `SELECT * FROM developers WHERE id = $1;`;
+    const ret = {
+        developerId: null,
+        developerName: null,
+        developerEmail: null,
+        developerInfoDeveloperSince: null,
+        developerInfoPreferredOS: null
+    };
+    const queryString = `
+    SELECT 
+    d.id AS "developerId",
+    d.name AS "developerName",
+    d.email AS "developerEmail",
+    di."developerSince" AS "developerInfoDeveloperSince",
+    di."preferredOS" AS "developerInfoPreferredOS"
+    FROM "developerInfos" AS di
+    JOIN developers d ON di."developerId" = d.id 
+    WHERE di."developerId" = $1; `;
     const queryConfig: QueryConfig = {
         text: queryString,
         values: [id],
     };
     const data: QueryResult<developers> = await client.query(queryConfig);
-    return data.rows[0];
+    if (data.rowCount > 0) {
+        Object.assign(ret, data.rows[0]);
+    }
+    return ret;
 };
 
 export const createDataServices = async (body: developersBody) => {
@@ -27,12 +46,11 @@ export const createDataServices = async (body: developersBody) => {
 export const editDataServices = async (body: developersBody, id: string) => {
     const query = format('UPDATE developers SET(%I) = ROW(%L) WHERE id = (%s) RETURNING *;', Object.keys(body), Object.values(body), id);
     const data: QueryResult<developers> = await client.query(query);
-
     return data.rows[0];
 }
 
 export const deleteDataServices = async (id: string) => {
-    const queryString = `DELETE FROM developers WHERE ID = $1;`;
+    const queryString = `DELETE FROM developers WHERE id = $1;`;
     const queryConfig: QueryConfig = {
         text: queryString,
         values: [id],

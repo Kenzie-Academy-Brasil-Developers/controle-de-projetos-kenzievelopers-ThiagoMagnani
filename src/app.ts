@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import "dotenv/config";
+import "express-async-errors";
 import developerRouter from "./router/developers.routers";
 import projectRouter from "./router/projects.routers";
 

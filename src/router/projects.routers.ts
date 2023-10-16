@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { createProjectsController, editProjectsController, getProjectsController } from "../controllers/projects.controller";
-import { isProjectsIdValid } from "../middlewares/projects.validation";
+import { projectsDataDeveloperIdExists, projectsDataIdExists, isDataDeveloperIdValid } from "../middlewares/projects.validation";
+
 
 const projectRouter = Router();
 
-projectRouter.get('/', isProjectsIdValid, getProjectsController);
-projectRouter.post('/:id', createProjectsController);
-projectRouter.patch('/:id', editProjectsController);
+projectRouter.get('/:id', projectsDataIdExists, getProjectsController);
+projectRouter.post('/', isDataDeveloperIdValid, createProjectsController);
+projectRouter.patch('/:id', projectsDataDeveloperIdExists, projectsDataIdExists, editProjectsController);
 
 export default projectRouter;
