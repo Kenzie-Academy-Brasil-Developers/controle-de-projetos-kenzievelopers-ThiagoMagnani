@@ -7,6 +7,6 @@ const projectRouter = Router();
 
 projectRouter.get('/:id', projectsDataIdExists, getProjectsController);
 projectRouter.post('/', isDataDeveloperIdValid, createProjectsController);
-projectRouter.patch('/:id', projectsDataDeveloperIdExists, projectsDataIdExists, editProjectsController);
+projectRouter.patch('/:id', projectsDataIdExists, projectsDataDeveloperIdExists, isDataDeveloperIdValid, editProjectsController);
 
 export default projectRouter;

@@ -9,7 +9,7 @@ export const projectsDataDeveloperIdExists = async (req: Request, res: Response,
         values: [req.body.developerId],
     };
     const rowCount = await client.query(queryConfig);
-    if (!rowCount.rows[0]) {
+    if (rowCount.rows[0]) {
         return res.status(404).json({ message: "Project not found." });
     }
     return next();
