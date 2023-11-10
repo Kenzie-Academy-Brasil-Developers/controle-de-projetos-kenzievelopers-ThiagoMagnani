@@ -30,8 +30,8 @@ export const isDataValidEmail = async (req: Request, res: Response, next: NextFu
         text: queryString,
         values: [req.body.email],
     };
-    const { rowCount } = await client.query(queryConfig);
-    if (rowCount > 0) {
+    const { rows } = await client.query(queryConfig);
+    if (rows[0]) {
         return res.status(409).json({ message: "Email already exists." });
     }
     return next();
@@ -43,8 +43,8 @@ export const developerInfoDataExists = async (req: Request, res: Response, next:
         text: queryString,
         values: [req.params.id],
     };
-    const { rowCount } = await client.query(queryConfig);
-    if (rowCount > 0) {
+    const { rows } = await client.query(queryConfig);
+    if (rows[0]) {
         return res.status(409).json({ message: "Developer infos already exists." });
     }
     return next();

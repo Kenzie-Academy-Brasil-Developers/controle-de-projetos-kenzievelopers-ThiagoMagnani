@@ -26,7 +26,7 @@ export const getDataServices = async (id: string) => {
         values: [id],
     };
     const data: QueryResult<developers> = await client.query(queryConfig);
-    if (data.rowCount > 0) {
+    if (data && data.rowCount && data.rowCount > 0) {
         Object.assign(ret, data.rows[0]);
     }
     return ret;

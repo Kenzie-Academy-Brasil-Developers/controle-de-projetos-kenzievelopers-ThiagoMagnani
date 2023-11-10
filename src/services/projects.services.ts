@@ -30,7 +30,7 @@ export const getProjectsServices = async (id: string) => {
         values: [id],
     };
     const data: QueryResult<projects> = await client.query(queryConfig);
-    if (data.rowCount > 0) {
+    if (data && data.rowCount && data.rowCount > 0) {
         Object.assign(ret, data.rows[0]);
     }
     return ret;
@@ -59,7 +59,7 @@ export const editProjectsServices = async (body: projectsBody, id: string) => {
     };
     const query = format('UPDATE projects SET(%I) = ROW(%L) WHERE id = (%s) RETURNING *;', Object.keys(body), Object.values(body), id);
     const data: QueryResult<projects> = await client.query(query);
-    if(data.rows[0]){
+    if (data.rows[0]) {
         Object.assign(ret, data.rows[0]);
     }
     return ret;
